@@ -34,7 +34,7 @@ if sys.version_info[0] > 2:
 csvFile = StringIO(csvData)
 csvReader = csv.reader(csvFile)
 for row in csvReader:
-    names.append(row[0]+":"+row[1]+":"+row[2])
+    names.append(f"{row[0]}:{row[1]}:{row[2]}")
     pems.append(row[30])
 del names[0] # Remove headers
 del pems[0] # Remove headers
@@ -48,10 +48,10 @@ except:
 derFiles = []
 idx = 0
 # Process the text PEM using openssl into DER files
-for i in range(0, len(pems)):
+for i in range(len(pems)):
     certName = "data/ca_%03d.der" % (idx);
     thisPem = pems[i].replace("'", "")
-    print(names[i] + " -> " + certName)
+    print(f"{names[i]} -> {certName}")
     ssl = Popen(['openssl','x509','-inform','PEM','-outform','DER','-out', certName], shell = False, stdin = PIPE)
     pipe = ssl.stdin
     pipe.write(thisPem.encode('utf-8'))
